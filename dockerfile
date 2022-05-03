@@ -22,5 +22,5 @@ COPY playwright.ps1 .
 RUN pwsh playwright.ps1 install --with-deps firefox
 RUN rm -rf playwright.ps1
 RUN apt remove wget powershell -yq
-EXPOSE 7276
+EXPOSE 8080
 ENTRYPOINT ["dotnet", "playwrightapi.dll"]

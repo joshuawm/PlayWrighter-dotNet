@@ -5,7 +5,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+// builder.Services.AddEndpointsApiExplorer();
 // builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
@@ -36,7 +36,7 @@ app.MapGet("/render",async (HttpRequest request)=>{
         if(response!=null){
                 return Results.Json(response);
         }else{
-            return Results.Json(new theResponse(false,"","Too Busy",null));
+            return Results.Json(new theResponse(false,"","Too Busy",null),null,null,500);
         }
     } 
     return Results.Json(new theResponse(false,"","I cant wait, i dowt know why",null));
