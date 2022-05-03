@@ -32,16 +32,17 @@ app.MapGet("/render",async (HttpRequest request)=>{
     var task = new RequestTask(url,vars);
     if(pm.Write(task)){
     var response = await task.GetResponse();
+    task.chan.Writer.Complete();
         if(response!=null){
                 return Results.Json(response);
         }else{
             return Results.Json(new theResponse(false,"","Too Busy",null));
         }
-    }
+    } 
     return Results.Json(new theResponse(false,"","I cant wait, i dowt know why",null));
 
 });
-app.Map("/",()=>"<h1>Hello Bitch. Pls dial </h1>");
+app.Map("/",()=>Results.Content("<h1>Hello Bitch! </h1><br><h2>Play <a href=\"https://www.youtube.com/watch?v=58hoktsqk_Q\">911</a>!!!</h2>", "text/html"));
 
 app.Run();
 Console.WriteLine("Hello World!");

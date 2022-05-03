@@ -50,7 +50,9 @@ namespace Handler{
             return _channel.Writer.TryWrite(task);
         }
         public PlaywrightMan(){
-            _browser = Playwright.CreateAsync().Result.Firefox.LaunchAsync().Result;
+            // var playwright = Playwright.CreateAsync().Result;
+            // _browser= playwright.Firefox.LaunchAsync().Result;
+            _browser=Playwright.CreateAsync().Result.Firefox.LaunchAsync().Result;
         }
         public void start (int concurrency=2){
             //start listening
