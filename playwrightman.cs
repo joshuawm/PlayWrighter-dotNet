@@ -58,20 +58,25 @@ namespace Handler{
             //start listening
             for(int i =0;i<concurrency;i++){
                 Task.Run(async()=>{
-                    IPage page = await _browser.NewPageAsync();
                     int ThreadID = i;
+                    var page = await _browser.NewPageAsync();
                     while(_isRunning  && await _channel.Reader.WaitToReadAsync()){
                         RequestTask t = await _channel.Reader.ReadAsync();
                         Console.WriteLine($"Thread {ThreadID} is processing {t.URL}");
                         try{
+                            if(page.IsClosed){
+                                page = await _browser.NewPageAsync();
+                            }
                             await page.GotoAsync(t.URL);
                             string html = await page.ContentAsync();
                             object? vars = null;
                             if(t.Vars!=null){
                                 vars= await page.EvaluateAsync<object>(t.Vars);
                             }
+                            
                             // t.chan.Writer.TryWrite(new theResponse(true,html,null,JsonDocument.Parse(JsonSerializer.Serialize(vars))));
                             t.chan.Writer.TryWrite(new theResponse(true,html,null,vars));
+                            await page.CloseAsync();
                         }catch(Exception e){
                             t.chan.Writer.TryWrite(new theResponse(false,"",e.Message,null));
                         }
