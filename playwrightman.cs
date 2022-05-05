@@ -67,6 +67,11 @@ namespace Handler{
                             if(page.IsClosed){
                                 page = await _browser.NewPageAsync();
                             }
+                            PageGotoOptions op = new PageGotoOptions(){
+                                Timeout=8000,
+                                WaitUntil=WaitUntilState.DOMContentLoaded
+                            };
+                            
                             await page.GotoAsync(t.URL);
                             string html = await page.ContentAsync();
                             object? vars = null;
@@ -76,7 +81,7 @@ namespace Handler{
                             
                             // t.chan.Writer.TryWrite(new theResponse(true,html,null,JsonDocument.Parse(JsonSerializer.Serialize(vars))));
                             t.chan.Writer.TryWrite(new theResponse(true,html,null,vars));
-                            await page.CloseAsync();
+                            // await page.CloseAsync();
                         }catch(Exception e){
                             t.chan.Writer.TryWrite(new theResponse(false,"",e.Message,null));
                         }
