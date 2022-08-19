@@ -69,10 +69,11 @@ namespace Handler{
                             }
                             PageGotoOptions op = new PageGotoOptions(){
                                 Timeout=8000,
-                                WaitUntil=WaitUntilState.DOMContentLoaded
+                                WaitUntil=WaitUntilState.NetworkIdle
                             };
                             
                             await page.GotoAsync(t.URL);
+                            await page.WaitForLoadStateAsync(LoadState.NetworkIdle);
                             string html = await page.ContentAsync();
                             object? vars = null;
                             if(t.Vars!=null){
